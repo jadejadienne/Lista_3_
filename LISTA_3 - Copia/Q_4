@@ -1,0 +1,51 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+
+class Pilha:
+    def __init__(self):
+        self._topo = None
+        self.tamanho = 0
+   
+    def __len__(self):
+        return self.tamanho
+   
+    def is_empty(self):
+        return self.tamanho == 0
+   
+    def push(self, valor):
+        no = No(valor)
+        no.proximo = self._topo
+        self._topo = no
+        self.tamanho += 1
+   
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        valor = self._topo.valor
+        self._topo = self._topo.proximo
+        self.tamanho -= 1
+        return valor
+   
+    def topo(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        return self._topo.valor
+    
+    #Escreva um programa que use uma pilha para converter um número decimal para binário.
+    
+def conv(Nu):
+    pilha = Pilha()
+    p = Nu
+    while Nu > 0:
+        rest_di = Nu % 2
+        pilha.push(rest_di)
+        Nu = Nu // 2 
+    return pilha
+Nu = int(input("qual numerro você deseja: ")) 
+
+rest_di = conv(Nu)
+print("o número em binario é: ")
+while not rest_di.is_empty():
+    print(rest_di.pop(), end= " ")

@@ -1,0 +1,67 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+
+class Pilha:
+    def __init__(self):
+        self._topo = None
+        self.tamanho = 0
+   
+    def __len__(self):
+        return self.tamanho
+   
+    def is_empty(self):
+        return self.tamanho == 0
+   
+    def inserir(self, valor):
+        no = No(valor)
+        no.proximo = self._topo
+        self._topo = no
+        self.tamanho += 1
+   
+    def remover(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        valor = self._topo.valor
+        self._topo = self._topo.proximo
+        self.tamanho -= 1
+        return valor
+   
+    def topo(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        return self._topo.valor
+    
+def conversorBinParaHex(numero_binario):
+    pilha = Pilha()
+    
+    decimal = 0
+    for digito in numeroBin:
+        if digito != '0' and digito != '1':
+            raise Exception("Número binário inválido")
+        decimal = decimal * 2 + int(digito)
+    
+    while decimal > 0:
+        resto = decimal % 16
+        pilha.push(resto)
+        decimal //= 16
+    
+    if pilha.is_empty():
+        return '0'
+    
+    numeroHex = ''
+    while not pilha.is_empty():
+        valor = pilha.pop()
+        if valor < 10:
+            numeroHex += str(valor)
+        else:
+            numeroHex += chr(ord('A') + valor - 10)
+    
+    return numeroHex
+
+numeroBin = input("Digite um número binário: ")
+
+numeroHex = conversorBinParaHex(numeroBin)
+
+print("Número hexadecimal:", numeroHex)

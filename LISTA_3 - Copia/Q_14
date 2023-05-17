@@ -1,0 +1,77 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+
+class Pilha:
+    def __init__(self):
+        self._topo = None
+        self.tamanho = 0
+   
+    def __len__(self):
+        return self.tamanho
+   
+    def is_empty(self):
+        return self.tamanho == 0
+   
+    def inserir(self, valor):
+        no = No(valor)
+        no.proximo = self._topo
+        self._topo = no
+        self.tamanho += 1
+   
+    def remover(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        valor = self._topo.valor
+        self._topo = self._topo.proximo
+        self.tamanho -= 1
+        return valor
+   
+    def topo(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        return self._topo.valor
+
+#Escreva um programa que leia uma expressão matemática na forma de string e utilize uma pilha para converter a expressão para a notação polonesa reversa.
+
+def is_operador(caractere):
+    return caractere in "+-*/"
+
+def precedencia(operador):
+    if operador in "+-":
+        return 1
+    elif operador in "*/":
+        return 2
+    return 0
+
+def converter_para_rpn(expressao):
+    pilha = Pilha()
+    rpn = ""
+    for caractere in expressao:
+        if caractere.isdigit():
+            rpn += caractere
+        elif is_operador(caractere):
+            while not pilha.is_empty() and is_operador(pilha.get_top()) and precedencia(pilha.get_top()) >= precedencia(caractere):
+                rpn += pilha.pop()
+            pilha.push(caractere)
+        elif caractere == "(":
+            pilha.push(caractere)
+        elif caractere == ")":
+            while not pilha.is_empty() and pilha.get_top() != "(":
+                rpn += pilha.pop()
+            if not pilha.is_empty() and pilha.get_top() == "(":
+                pilha.pop()
+
+    while not pilha.is_empty():
+        rpn += pilha.pop()
+
+    return rpn
+
+expressao = input("Digite a expressão matemática: ")
+
+expressao_rpn = converter_para_rpn(expressao)
+
+print("\nExpressão em notação polonesa reversa (RPN):", expressao_rpn)
+    
+    

@@ -1,0 +1,58 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+
+class Pilha:
+    def __init__(self):
+        self._topo = None
+        self.tamanho = 0
+   
+    def __len__(self):
+        return self.tamanho
+   
+    def is_empty(self):
+        return self.tamanho == 0
+   
+    def inserir(self, valor):
+        no = No(valor)
+        no.proximo = self._topo
+        self._topo = no
+        self.tamanho += 1
+   
+    def remover(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        valor = self._topo.valor
+        self._topo = self._topo.proximo
+        self.tamanho -= 1
+        return valor
+   
+    def topo(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        return self._topo.valor
+    
+#Escreva um programa que use uma pilha para converter um número octal para decimal.
+
+def converter_octal_para_decimal(octal):
+    pilha = Pilha()
+    for char in octal:
+        if char.isdigit():
+            pilha.push(int(char))
+
+    decimal = 0
+    posicao_decimal = 0
+    while not pilha.is_empty():
+        digit = pilha.pop()
+        decimal += digit * (8 ** posicao_decimal)
+        posicao_decimal += 1
+
+    return decimal
+
+octal = input("Digite um número octal: ")
+
+decimal = converter_octal_para_decimal(octal)
+
+print("Número decimal:", decimal)
+

@@ -1,0 +1,64 @@
+class No:
+    def __init__(self, valor):
+        self.valor = valor
+        self.proximo = None
+
+class Pilha:
+    def __init__(self):
+        self._topo = None
+        self.tamanho = 0
+   
+    def __len__(self):
+        return self.tamanho
+   
+    def is_empty(self):
+        return self.tamanho == 0
+   
+    def push(self, valor):
+        no = No(valor)
+        no.proximo = self._topo
+        self._topo = no
+        self.tamanho += 1
+   
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        valor = self._topo.valor
+        self._topo = self._topo.proximo
+        self.tamanho -= 1
+        return valor
+   
+    def topo(self):
+        if self.is_empty():
+            raise IndexError("A pilha está vazia")
+        return self._topo.valor
+    
+#Escreva um programa que leia uma string contendo números e use uma pilha para converter a string em um número binário.
+
+def converter_lista_para_binario(lista):
+    pilha = Pilha()
+    for num_str in lista:
+        num = int(num_str)
+        binario = ""
+        if num == 0:
+            binario = "0"
+        else:
+            while num > 0:
+                bit = num % 2
+                pilha.push(str(bit))
+                num //= 2
+            while not pilha.is_empty():
+                binario += pilha.pop()
+        pilha.inserir(binario)
+
+    numero_binario = ""
+    while not pilha.is_empty():
+        numero_binario += pilha.pop()
+
+    return numero_binario
+
+lista_numeros = input("Digite uma sequência de números separados por espaço: ").split()
+
+numero_binario = converter_lista_para_binario(lista_numeros)
+
+print("Número binário:", numero_binario)   
